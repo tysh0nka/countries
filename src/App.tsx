@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
+import {Route, Routes} from 'react-router-dom';
 import './App.css';
+import Header from "./components/Header/Header";
+import Main from "./components/Main/Main";
+import HomePage from "./components/routes/HomePage/HomePage";
+import NotFound from "./components/routes/NotFound/NotFound";
+import Details from "./components/routes/Details/Details";
+
+
+export type CountriesType =
+    {
+        "name": string,
+        "capital": string,
+        "region": string,
+        "population": number,
+        "flags": {
+            "svg": string,
+            "png": string
+        },
+        "independent": boolean
+    }
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const [countries, setCountries] = useState<Array<CountriesType>>([])
+
+    return (
+        < >
+            <Header/>
+            <Main>
+                <Routes>
+                    <Route path='/' element={<HomePage countries={countries} setCountries={setCountries}/>}/>
+                    <Route path={'/*'} element={<NotFound/>}/>
+                    <Route path='/country/:name' element={<Details/>}/>
+                </Routes>
+            </Main>
+        </>
+    );
 }
 
 export default App;
